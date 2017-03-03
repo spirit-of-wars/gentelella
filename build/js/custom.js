@@ -117,13 +117,23 @@ $MENU_TOGGLE.on('click', function() {
 });
 
 	// check active menu
-	$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
+	if($SIDEBAR_MENU.find('li[data-current]').length > 0){
+		$SIDEBAR_MENU.find('li[data-current]:last').addClass('active').find('ul:first').slideDown(function() {
+			setContentHeight();
+		});
 
-	$SIDEBAR_MENU.find('a').filter(function () {
-		return this.href == CURRENT_URL;
-	}).parent('li').addClass('current-page').parents('ul').slideDown(function() {
-		setContentHeight();
-	}).parent().addClass('active');
+		$SIDEBAR_MENU.find('li[data-current]').addClass('current-page').parents('ul').slideDown(function() {
+			setContentHeight();
+		}).parent().addClass('active');
+	} else {
+		$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
+
+		$SIDEBAR_MENU.find('a').filter(function () {
+			return this.href == CURRENT_URL;
+		}).parent('li').addClass('current-page').parents('ul').slideDown(function() {
+			setContentHeight();
+		}).parent().addClass('active');
+	}
 
 	// recompute content when resizing
 	$(window).smartresize(function(){  
